@@ -1,4 +1,4 @@
-import express, { json } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import { connectMongoDB } from "./config/db.js";
 import { categoryRouter } from "./routes/categoryRoutes.js";
