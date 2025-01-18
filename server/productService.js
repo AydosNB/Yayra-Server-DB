@@ -1,3 +1,4 @@
+import { productDTO } from "../dtos/productDto.js";
 import { productModel } from "../models/productModel.js";
 import { deleteFile, saveFile, updateFileArray } from "./fileService.js";
 
@@ -23,7 +24,8 @@ export const addProServ = async (productData, images = []) => {
             }
         }
         const products = await productModel.create({ ...productData, images: fileImagesName() })
-        return products
+        const productDto = new productDTO(products)
+        return productDto
     } catch (error) {
         throw new Error("Product qoshishda xatolik: " + error.message)
     }
@@ -41,11 +43,11 @@ export const deleteProServ = async (id) => {
 }
 
 export const updateProServ = async (id, updateData, images = []) => {
-    
+
     try {
         const oldFileName = await productModel.findById(id)
         const newFileNames = await updateFileArray(images, oldFileName?.images)
-        const products = await productModel.findByIdAndUpdate(id, { ...updateData, images : images? newFileNames : oldFileName.images }, { new: true })
+        const products = await productModel.findByIdAndUpdate(id, { ...updateData, images: images ? newFileNames : oldFileName.images }, { new: true })
         return products
     } catch (error) {
         throw new Error("Product o'zgartirishda xatolik: " + error.message);

@@ -1,3 +1,4 @@
+import { categoryDTO } from "../dtos/categoryDto.js";
 import { categoryModel } from "../models/categoryModel.js";
 import { deleteFile, saveFile, updateFile } from "./fileService.js";
 
@@ -15,7 +16,8 @@ export const addCatServ = async (categoryData, image) => {
     try {
         const fileName = saveFile(image)
         const categories = await categoryModel.create({ ...categoryData, image: fileName })
-        return categories
+        const categoryDto = new categoryDTO(categories)
+        return categoryDto
     } catch (error) {
         throw new Error("Kategorya qoshishda xatolik: " + error.message)
     }
